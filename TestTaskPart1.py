@@ -1,0 +1,2 @@
+InputString = input()
+print(InputString)

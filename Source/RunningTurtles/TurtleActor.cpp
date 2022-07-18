@@ -3,6 +3,9 @@
 
 #include "TurtleActor.h"
 
+#include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
+
 // Sets default values
 ATurtleActor::ATurtleActor()
 {
@@ -11,6 +14,7 @@ ATurtleActor::ATurtleActor()
 
 }
 
+// Called to set a destination point for turtle
 void ATurtleActor::SetDestinationPoint(FVector NewDestinationPoint)
 {
 	DestinationPoint = NewDestinationPoint; 
@@ -21,19 +25,27 @@ void ATurtleActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Set timer for move direction change
 	FTimerHandle TimerHandle;
 	FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, &ATurtleActor::ChangeMoveDirection, AlternativeMoveDirection);
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, ChangeDirectionInterval, false);
-	//TODO Play spawn sound
-	//TODO Create walking sound
+	
+	// Play spawn sound
+	UGameplayStatics::SpawnSoundAtLocation(GetWorld(), SpawnSound, GetActorLocation(), GetActorRotation());
+	
+	// Create walking sound
+	WalkSoundAudioComponent = UGameplayStatics::SpawnSoundAttached(WalkSound, GetRootComponent());
 }
 
+// Called to change turtle move pattern
 void ATurtleActor::ChangeMoveDirection(int32 NewMoveDirection)
 {
 	// Change direction
 	MoveDirection = NewMoveDirection;
 
 	FRotator CurrentRotation = GetActorRotation();
+	
+	// Adjust move direction with rotation
 	if (MoveDirection == EMoveDirection::UpFront)
 	{
 		if (CurrentRotation.Yaw != 90.f)
@@ -77,12 +89,24 @@ void ATurtleActor::Tick(float DeltaTime)
 	VectorToDestinationPoint.Normalize();
 	FVector NewLocation = GetActorLocation() + VectorToDestinationPoint * MoveDirection * MovementSpeed * DeltaTime;
 
-	// If reached map edge - destroy self 
+	// Check if reached destination point
 	if (NewLocation.Y > DestinationPoint.Y)
 	{
-		//TODO Play death sound
+		
+		// Stop walking sound
+		WalkSoundAudioComponent->Stop();
+
+		// Play death sound
+		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), DestroySound, GetActorLocation(), GetActorRotation());
+		
+		// Destroy self
 		Destroy();
 	}
-	SetActorLocation(NewLocation);
+	else
+	{
+		// Move to new location
+		SetActorLocation(NewLocation);
+	}
+	
 }
 

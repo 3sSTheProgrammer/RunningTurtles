@@ -14,12 +14,15 @@ class RUNNINGTURTLES_API ARunningTurtlesCharacter : public ACharacter
 	GENERATED_BODY()
 
 protected:
+	// A reference to camera component
 	UPROPERTY()
 	UCameraComponent* CameraComponent;
 
+	// Character movement speed
 	UPROPERTY()
 	float MoveAmountPerSecond = 500;
 
+	// Character turn rate
 	UPROPERTY()
 	float TurnRate = 45.f;
 	
@@ -31,14 +34,19 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
+	// Used to control character horizontal rotation 
 	void LookHorizontally(float Input);
 
+	// Used to control character vertical rotation 
 	void LookVertically(float Input);
 
+	// Used to control character forward/backward movement
 	void MoveForwardBackward(float Input);
 
+	// Used to control character right/left movement
 	void MoveRightLeft(float Input);
 
+	// Called when Interact action is commited
 	void Interact();
 	
 public:	

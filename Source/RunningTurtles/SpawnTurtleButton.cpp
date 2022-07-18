@@ -13,6 +13,7 @@ ASpawnTurtleButton::ASpawnTurtleButton()
 
 }
 
+// Called to spawn a turtle
 void ASpawnTurtleButton::SpawnTurtle()
 {
 	if (TurtleSpawner)
@@ -29,17 +30,21 @@ void ASpawnTurtleButton::BeginPlay()
 	FindTurtleSpawner();
 }
 
+// Called to find corresponding turtle spawner on level
 void ASpawnTurtleButton::FindTurtleSpawner()
 {
 	TArray<AActor*> TurtleSpawners;
+	
+	// Find all turtle spawners 
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATurtleSpawner::StaticClass(), TurtleSpawners);
-	//UE_LOG(LogTemp, Warning, TEXT("Found %d spawners"), TurtleSpawners.Num());
 	for (AActor* FoundActor :TurtleSpawners)
 	{
 		if (ATurtleSpawner* FoundTurtleSpawner = Cast<ATurtleSpawner>(FoundActor))
 		{
+			// if turtle spawner number is the same as this button's number
 			if (FoundTurtleSpawner->GetSpawnerNumber() == ButtonNumber)
 			{
+				// Set TurtleSpawner to found spawner
 				TurtleSpawner = FoundTurtleSpawner;
 			}
 		}

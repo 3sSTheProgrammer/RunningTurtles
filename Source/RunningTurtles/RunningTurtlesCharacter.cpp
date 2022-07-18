@@ -11,8 +11,6 @@ ARunningTurtlesCharacter::ARunningTurtlesCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	//bUseControllerRotationYaw = false;
 	
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 	CameraComponent->SetupAttachment(RootComponent);
@@ -26,30 +24,34 @@ void ARunningTurtlesCharacter::BeginPlay()
 	
 }
 
+// Used to control character horizontal rotation 
 void ARunningTurtlesCharacter::LookHorizontally(float Input)
 {
 	AddControllerYawInput(Input * TurnRate * GetWorld()->GetDeltaSeconds());
 }
 
+// Used to control character vertical rotation 
 void ARunningTurtlesCharacter::LookVertically(float Input)
 {
 	AddControllerPitchInput(Input * TurnRate * GetWorld()->GetDeltaSeconds());
 }
 
+// Used to control character forward/backward movement
 void ARunningTurtlesCharacter::MoveForwardBackward(float Input)
 {
 	AddMovementInput(GetActorForwardVector(), Input);
 }
 
+// Used to control character right/left movement
 void ARunningTurtlesCharacter::MoveRightLeft(float Input)
 {
 	AddMovementInput(GetActorRightVector(), Input);
 }
 
+// Called when Interact action is commited
 void ARunningTurtlesCharacter::Interact()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Interacting"));
-
+	// Create a line trace
 	FVector StartLocation = CameraComponent->GetComponentLocation();
 	FVector EndLocation = StartLocation + CameraComponent->GetComponentRotation().Vector() * 250;
 	FHitResult HitResult;
@@ -59,6 +61,7 @@ void ARunningTurtlesCharacter::Interact()
 	if (GetWorld()->LineTraceSingleByObjectType(HitResult, StartLocation, EndLocation,
 		FCollisionObjectQueryParams(), QueryParams))
 	{
+		// If line trace hit a spawn button - spawn turtle
 		if (ASpawnTurtleButton* SpawnTurtleButton = Cast<ASpawnTurtleButton>(HitResult.GetActor()))
 		{
 			SpawnTurtleButton->SpawnTurtle();		

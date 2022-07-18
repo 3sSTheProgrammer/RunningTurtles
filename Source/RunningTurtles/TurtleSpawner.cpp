@@ -13,6 +13,7 @@ ATurtleSpawner::ATurtleSpawner()
 
 }
 
+// A getter for SpawnNumber
 int32 ATurtleSpawner::GetSpawnerNumber()
 {
 	return SpawnerNumber;
@@ -23,14 +24,16 @@ void ATurtleSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	DestinationPoint = GetActorLocation() + GetActorForwardVector() * 1500;
+	// Generate spawn point and turtle destination point depending on spawner position
+	SpawnPoint = GetActorLocation() + GetActorForwardVector() * 200;
+	DestinationPoint = GetActorLocation() + GetActorForwardVector() * 1700;
 }
 
+// Called to spawn a turtle
 void ATurtleSpawner::SpawnTurtle()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Spawning turtle"));
 	ATurtleActor* SpawnedTurtleActor = GetWorld()->SpawnActor<ATurtleActor>(TurtleActor,
-		GetActorLocation(), GetActorRotation());
+		SpawnPoint, GetActorRotation());
 	SpawnedTurtleActor->SetDestinationPoint(DestinationPoint);
 }
 
