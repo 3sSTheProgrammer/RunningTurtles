@@ -7,6 +7,7 @@
 #include "TurtleActor.generated.h"
 
 class USoundBase;
+class UNiagaraSystem;
 
 // A enum that describes movement direction options
 UENUM()
@@ -54,6 +55,17 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Sounds")
 	USoundBase* DestroySound;
+
+
+	//Effects used by turtle
+	UPROPERTY(EditAnywhere, Category = "VisualEffects")
+	UNiagaraSystem* SpawnEffect;
+
+	UPROPERTY(EditAnywhere, Category = "VisualEffects")
+	UNiagaraSystem* WalkEffect;
+
+	UPROPERTY(EditAnywhere, Category = "VisualEffects")
+	UNiagaraSystem* DestroyEffect;
 
 	// Audio component that plays the walking sound
 	UPROPERTY()

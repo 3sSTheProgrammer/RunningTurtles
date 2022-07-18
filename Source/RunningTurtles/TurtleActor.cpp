@@ -5,6 +5,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Components/AudioComponent.h"
+#include "NiagaraFunctionLibrary.h"
 
 // Sets default values
 ATurtleActor::ATurtleActor()
@@ -35,6 +36,13 @@ void ATurtleActor::BeginPlay()
 	
 	// Create walking sound
 	WalkSoundAudioComponent = UGameplayStatics::SpawnSoundAttached(WalkSound, GetRootComponent());
+
+	// Create a spawn visual effect
+	UNiagaraFunctionLibrary::SpawnSystemAttached(WalkEffect, GetRootComponent(), TEXT("Walk Effect"), GetActorLocation(), GetActorRotation(), 
+		EAttachLocation::KeepWorldPosition, true);
+
+	// Create a spawn visual effect
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), SpawnEffect, GetActorLocation());
 }
 
 // Called to change turtle move pattern
@@ -99,6 +107,9 @@ void ATurtleActor::Tick(float DeltaTime)
 		// Play death sound
 		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), DestroySound, GetActorLocation(), GetActorRotation());
 		
+		// Create a destroy visual effect
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), DestroyEffect, GetActorLocation());
+
 		// Destroy self
 		Destroy();
 	}
