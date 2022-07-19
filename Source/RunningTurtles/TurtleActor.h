@@ -56,7 +56,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Sounds")
 	USoundBase* DestroySound;
 
-
 	//Effects used by turtle
 	UPROPERTY(EditAnywhere, Category = "VisualEffects")
 	UNiagaraSystem* SpawnEffect;
