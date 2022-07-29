@@ -8,4 +8,6 @@ From the second spawner: moves towards destination point for a second, then stan
 From the third spawner: moves towards destination point for a second, then moves back for a halfsecond, then moves forward again etc.  
   
 Here is a [link](https://drive.google.com/drive/folders/1ljHtDI2k8kMiC--J0k_ZAShPDJzvWB1P?usp=sharing) to last version of the game (need to download the folder and run .exe file).   
-![](ImagesForReadme/Screenshot1.png)
+![](ImagesForReadme/Screenshot1.png)  
+![](ImagesForReadme/Screenshot2.png)  
+![](ImagesForReadme/Screenshot3.png)  
